@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/pages/home_page.dart';
+import 'package:front_end/pages/settings_page.dart';
 
 import 'pages/auth_page.dart';
 
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
       debugShowCheckedModeBanner: false,
-      home: AuthPage(),
+      home: HomePage(),
     );
   }
 }
