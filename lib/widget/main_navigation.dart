@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import '../pages/home_page.dart';
-// import '../pages/scan_page.dart';       // Un-comment jika file sudah ada
-// import '../pages/settings_page.dart';   // Un-comment jika file sudah ada
+import '../screens/dashboard_page.dart';
+import '../screens/scan_qr_page.dart'; // 🟢 Mengarah ke halaman scan asli
+import '../screens/account_page.dart'; // 🟢 Mengarah ke halaman akun asli
 
 class MainNavigation extends StatefulWidget {
-  const MainNavigation({super.key});
+  final String token;
+
+  const MainNavigation({
+    super.key,
+    required this.token,
+  });
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
@@ -12,119 +17,78 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
+  late final List<Widget> _pages;
 
-  // List halaman setelah login
-  final List<Widget> _pages = [
-    const HomePage(),
-    
-    // Ganti Placeholder di bawah ini dengan file ScanPage & SettingsPage kamu jika sudah dibuat
-    const Center(child: Text('Halaman Scan QR', style: TextStyle(fontSize: 20))), 
-    const Center(child: Text('Halaman Pengaturan / Akun', style: TextStyle(fontSize: 20))), 
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Menghubungkan token ke masing-masing page asli
+    _pages = [
+      DashboardPage(token: widget.token),
+      ScanQrPage(token: widget.token),
+      AccountPage(token: widget.token),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Menampilkan halaman aktif berdasarkan indeks navbar
-      body: _pages[_currentIndex],
-      
-      // 1. Tombol Tengah (Scanning)
+      extendBody: true, 
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       floatingActionButton: SizedBox(
-        width: 72,
-        height: 72,
+        width: 64,
+        height: 64,
         child: FloatingActionButton(
+          backgroundColor: Colors.blueAccent,
+          shape: const CircleBorder(),
           onPressed: () {
             setState(() {
-              _currentIndex = 1; // Pindah ke ScanPage
+              _currentIndex = 1; // Pindah ke halaman ScanQrPage
             });
           },
-          backgroundColor: const Color(0xFF3299FF),
           elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
-          ),
-          child: const Icon(
-            Icons.qr_code_scanner_rounded, 
-            color: Colors.white, 
-            size: 36,
-          ),
+          child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      // 2. Bar Navigasi (Beranda & Akun/Settings)
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         notchMargin: 8.0,
         color: Colors.white,
-        elevation: 10,
-        shadowColor: Colors.black.withOpacity(0.4),
-        child: SizedBox(
-          height: 64,
+        elevation: 15,
+        child: Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Tombol Beranda (Kiri)
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = 0; // Pindah ke HomePage
-                    });
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.home_rounded,
-                        color: _currentIndex == 0 ? const Color(0xFF424242) : Colors.grey,
-                        size: 28,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Beranda',
-                        style: TextStyle(
-                          color: _currentIndex == 0 ? const Color(0xFF424242) : Colors.grey,
-                          fontSize: 12,
-                          fontWeight: _currentIndex == 0 ? FontWeight.w600 : FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
+              IconButton(
+                icon: Icon(
+                  Icons.home_rounded,
+                  size: 28,
+                  color: _currentIndex == 0 ? Colors.blueAccent : Colors.grey.shade400,
                 ),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 0; // Pindah ke Dashboard
+                  });
+                },
               ),
-
-              // Spacer untuk ruang FloatingActionButton di tengah
-              const SizedBox(width: 72),
-
-              // Tombol Akun / Settings (Kanan)
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = 2; // Pindah ke SettingsPage
-                    });
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.account_circle_outlined,
-                        color: _currentIndex == 2 ? const Color(0xFF424242) : Colors.grey,
-                        size: 28,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Akun',
-                        style: TextStyle(
-                          color: _currentIndex == 2 ? const Color(0xFF424242) : Colors.grey,
-                          fontSize: 12,
-                          fontWeight: _currentIndex == 2 ? FontWeight.w600 : FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
+              const SizedBox(width: 40), // Ruang kosong untuk lekukan FAB QR
+              IconButton(
+                icon: Icon(
+                  Icons.person_rounded,
+                  size: 28,
+                  color: _currentIndex == 2 ? Colors.blueAccent : Colors.grey.shade400,
                 ),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 2; // Pindah ke AccountPage
+                  });
+                },
               ),
             ],
           ),
