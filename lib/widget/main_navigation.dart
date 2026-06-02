@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import '../screens/dashboard_page.dart';
 import '../screens/scan_qr_page.dart'; // 🟢 Mengarah ke halaman scan asli
 import '../screens/account_page.dart'; // 🟢 Mengarah ke halaman akun asli
+import '../pages/settings.dart';
 
 class MainNavigation extends StatefulWidget {
   final String token;
 
-  const MainNavigation({
-    super.key,
-    required this.token,
-  });
+  const MainNavigation({super.key, required this.token});
 
   @override
   State<MainNavigation> createState() => _MainNavigationState();
@@ -26,18 +24,16 @@ class _MainNavigationState extends State<MainNavigation> {
     _pages = [
       DashboardPage(token: widget.token),
       ScanQrPage(token: widget.token),
-      AccountPage(token: widget.token),
+      // AccountPage(token: widget.token),
+      const PengaturanScreen(),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, 
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      extendBody: true,
+      body: IndexedStack(index: _currentIndex, children: _pages),
       floatingActionButton: SizedBox(
         width: 64,
         height: 64,
@@ -50,7 +46,11 @@ class _MainNavigationState extends State<MainNavigation> {
             });
           },
           elevation: 4,
-          child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 30),
+          child: const Icon(
+            Icons.qr_code_scanner,
+            color: Colors.white,
+            size: 30,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -69,7 +69,9 @@ class _MainNavigationState extends State<MainNavigation> {
                 icon: Icon(
                   Icons.home_rounded,
                   size: 28,
-                  color: _currentIndex == 0 ? Colors.blueAccent : Colors.grey.shade400,
+                  color: _currentIndex == 0
+                      ? Colors.blueAccent
+                      : Colors.grey.shade400,
                 ),
                 onPressed: () {
                   setState(() {
@@ -82,7 +84,9 @@ class _MainNavigationState extends State<MainNavigation> {
                 icon: Icon(
                   Icons.person_rounded,
                   size: 28,
-                  color: _currentIndex == 2 ? Colors.blueAccent : Colors.grey.shade400,
+                  color: _currentIndex == 2
+                      ? Colors.blueAccent
+                      : Colors.grey.shade400,
                 ),
                 onPressed: () {
                   setState(() {

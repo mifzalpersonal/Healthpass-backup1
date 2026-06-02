@@ -13,8 +13,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Halaman Pengaturan',
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFF5F6F9), // Latar abu-abu sangat muda
-        fontFamily: 'Poppins', // Pastikan font ini terdaftar, atau akan fallback ke font sistem
+        scaffoldBackgroundColor: const Color(
+          0xFFF5F6F9,
+        ), // Latar abu-abu sangat muda
+        fontFamily: 'Poppins', // Pastikan font ini terdaftar di pubspec.yaml
       ),
       home: const PengaturanScreen(),
     );
@@ -28,27 +30,31 @@ class PengaturanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
-              
-              // --- SECTION 1: PROFIL USER ---
-              Row(
-                children: [
-                  // Foto Profil (Bulat)
-                  const CircleAvatar(
-                    radius: 45,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: NetworkImage(
-                      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200', // Contoh placeholder foto
-                    ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 32),
+
+                // --- SECTION 1: KARTU PROFIL USER (TANPA FOTO) ---
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.grey.shade200, width: 1.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  // Teks Nama & Badge Penyakit
-                  Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
@@ -59,123 +65,165 @@ class PengaturanScreen extends StatelessWidget {
                           color: Color(0xFF2D3142),
                         ),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 8),
+                      // Badge Nomor BPJS
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE3F2FD), // Biru muda transparan
-                          borderRadius: BorderRadius.circular(12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
-                        child: const Text(
-                          'Kanker Bulu Ayam',
-                          style: TextStyle(
-                            color: Color(0xFF1E88E5), // Biru tegas
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        decoration: BoxDecoration(
+                          color: const Color(
+                            0xFFE3F2FD,
+                          ), // Biru muda transparan
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.credit_card_rounded,
+                              size: 16,
+                              color: Color(0xFF1E88E5),
+                            ),
+                            SizedBox(width: 6),
+                            Text(
+                              'No. BPJS: 0002468135790',
+                              style: TextStyle(
+                                color: Color(0xFF1E88E5), // Biru tegas
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  )
-                ],
-              ),
-              
-              const SizedBox(height: 40),
-              
-              // --- SECTION 2: JUDUL PENGATURAN ---
-              const Text(
-                'Pengaturan',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2D3142),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
 
-              // --- SECTION 3: KOTAK MENU LIST ---
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.shade200, width: 1.5),
+                const SizedBox(height: 32),
+
+                // --- SECTION 2: JUDUL PENGATURAN ---
+                const Text(
+                  'Pengaturan Akun',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2D3142),
+                  ),
                 ),
-                child: const Column(
-                  children: [
-                    MenuTileSetting(
-                      icon: Icons.palette_outlined, 
-                      title: 'Tampilan'
-                    ),
-                    Divider(height: 1, indent: 20, endIndent: 20, color: Color(0xFFE0E0E0)),
-                    MenuTileSetting(
-                      icon: Icons.badge_outlined, 
-                      title: 'ID BPJS'
-                    ),
-                    Divider(height: 1, indent: 20, endIndent: 20, color: Color(0xFFE0E0E0)),
-                    MenuTileSetting(
-                      icon: Icons.mail_outline_rounded, 
-                      title: 'Kaitkan Akun'
-                    ),
-                  ],
-                ),
-              ),
+                const SizedBox(height: 14),
 
-              const SizedBox(height: 25),
-
-              // --- SECTION 4: TOMBOL KELUAR ---
-              InkWell(
-                onTap: () {
-                  // Aksi Log Out di sini
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                // --- SECTION 3: KOTAK MENU LIST ---
+                Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.redAccent.shade100, width: 1.5),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.grey.shade200, width: 1.5),
                   ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: const Column(
                     children: [
-                      Icon(Icons.logout_rounded, color: Colors.redAccent, size: 24),
-                      SizedBox(width: 10),
-                      Text(
-                        'Keluar',
-                        style: TextStyle(
-                          color: Colors.redAccent,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      MenuTileSetting(
+                        icon: Icons.alternate_email_rounded,
+                        title: 'Edit Email',
+                      ),
+                      Divider(
+                        height: 1,
+                        indent: 20,
+                        endIndent: 20,
+                        color: Color(0xFFE0E0E0),
+                      ),
+                      MenuTileSetting(
+                        icon: Icons.lock_outline_rounded,
+                        title: 'Edit Password',
+                      ),
+                      Divider(
+                        height: 1,
+                        indent: 20,
+                        endIndent: 20,
+                        color: Color(0xFFE0E0E0),
+                      ),
+                      MenuTileSetting(
+                        icon: Icons.phone_android_rounded,
+                        title: 'Nomor Telepon',
                       ),
                     ],
                   ),
                 ),
-              ),
 
-              const Spacer(),
+                const SizedBox(height: 24),
 
-              // --- SECTION 5: FOOTER PRIVASI ---
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 24.0),
-                  child: Text.rich(
-                    TextSpan(
-                      text: 'Privasi, keamanan, dan kenyamanan pengguna\nadalah ',
-                      style: TextStyle(color: Colors.grey, fontSize: 12, height: 1.5),
+                // --- SECTION 4: TOMBOL KELUAR ---
+                InkWell(
+                  onTap: () {
+                    // Aksi Log Out di sini
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.redAccent.shade100,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextSpan(
-                          text: 'prioritas kami.',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                        Icon(
+                          Icons.logout_rounded,
+                          color: Colors.redAccent,
+                          size: 22,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Keluar',
+                          style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center, // Aman dari error typo kemarin 👍
                   ),
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 40),
+
+                // --- SECTION 5: FOOTER PRIVASI ---
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 24.0),
+                    child: Text.rich(
+                      TextSpan(
+                        text:
+                            'Privasi, keamanan, dan kenyamanan pengguna\nadalah ',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          height: 1.5,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'prioritas kami.',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -188,11 +236,7 @@ class MenuTileSetting extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const MenuTileSetting({
-    super.key, 
-    required this.icon, 
-    required this.title
-  });
+  const MenuTileSetting({super.key, required this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +244,9 @@ class MenuTileSetting extends StatelessWidget {
       onTap: () {
         // Aksi ketika menu diklik
       },
+      borderRadius: BorderRadius.circular(
+        20,
+      ), // Biar efek ripple-nya rapi di ujung landai
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
@@ -211,14 +258,14 @@ class MenuTileSetting extends StatelessWidget {
                 color: const Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: const Color(0xFF2D3142), size: 24),
+              child: Icon(icon, color: const Color(0xFF2D3142), size: 22),
             ),
             const SizedBox(width: 16),
             // Judul Menu
             Text(
               title,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: Color(0xFF2D3142),
               ),
@@ -226,9 +273,9 @@ class MenuTileSetting extends StatelessWidget {
             const Spacer(),
             // Panah Sisi Kanan
             const Icon(
-              Icons.arrow_forward_ios_rounded, 
-              color: Colors.grey, 
-              size: 16
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.grey,
+              size: 14,
             ),
           ],
         ),
