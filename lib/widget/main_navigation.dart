@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/dashboard_page.dart';
 import '../screens/scan_qr_page.dart'; // 🟢 Mengarah ke halaman scan asli
-import '../screens/account_page.dart'; // 🟢 Mengarah ke halaman akun asli
+import '../screens/account_page.dart'; // 🟢 Mengarah ke halaman akun asli and note from ijal ini hapus aj asoalnya udah diganti jadi settings.dart
 import '../pages/settings.dart';
 
 class MainNavigation extends StatefulWidget {
